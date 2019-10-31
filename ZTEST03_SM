@@ -1,0 +1,50 @@
+*&---------------------------------------------------------------------*
+*& Report ZTEST03_SM
+*&---------------------------------------------------------------------*
+*& CDS-con-parametros-ABAP
+*&---------------------------------------------------------------------*
+REPORT ztest03_sm.
+
+CLASS demo DEFINITION.
+  PUBLIC SECTION.
+    CLASS-METHODS main. "Definición del método main / Método estático
+ENDCLASS.
+
+CLASS demo IMPLEMENTATION.
+  METHOD main. "Implementación del método main
+*----------------------------------------------------------------
+* Declaración de variables
+*----------------------------------------------------------------
+    DATA: vl_from_distance TYPE s_distance VALUE 2000,
+          vl_to_distance   TYPE s_distance VALUE 6000,
+          vl_unit          TYPE s_distid   VALUE 'MI'.
+
+*----------------------------------------------------------------
+* Ejecución del metodo Input para generar el grid
+*----------------------------------------------------------------
+    cl_demo_input=>new(
+      )->add_field( EXPORTING text = 'From Distance' " Nombre campo
+                    CHANGING field = vl_from_distance " Valor a asignar
+      )->add_field( EXPORTING text = 'To Distance'
+                    CHANGING field = vl_to_distance
+      )->add_field( EXPORTING text = 'Unidad Medida'
+                    CHANGING field = vl_unit
+      )->request( ). " Botón Enter
+
+* Se realiza una consulta usando la CDS que creamos y con los parametros
+* que tenemos en la CDS.
+    SELECT *
+      FROM demo_cds_para_sm( p_distance_l = @vl_from_distance,
+                             p_distance_o = @vl_to_distance,
+                             p_unit       = @vl_unit )
+      ORDER BY carrid, connid  "Campos llave en CDS
+      INTO TABLE @DATA(tl_result). "Se crea tl_result al vuelo
+
+    " Método display para mostrar los datos
+    cl_demo_output=>display( tl_result ).
+  ENDMETHOD.
+ENDCLASS.
+
+START-OF-SELECTION.
+* Se ejecuta el metodo main
+  demo=>main( ).
