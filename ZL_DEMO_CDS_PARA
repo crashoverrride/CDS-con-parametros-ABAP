@@ -20,6 +20,7 @@ define view ZL_DEMO_CDS_PARA  // Nombre de CDS
       distance,
       distid
 }
+// Se hace un filtro por unidad y distancia
 where
       distid   =       :p_unit
   and distance between :p_distance_l and :p_distance_o;
