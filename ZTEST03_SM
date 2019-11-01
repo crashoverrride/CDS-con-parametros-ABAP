@@ -33,6 +33,7 @@ CLASS demo IMPLEMENTATION.
 
 * Se realiza una consulta usando la CDS que creamos y con los parametros
 * que tenemos en la CDS.
+* El filtro para la obtención de datos se hace desde la CDS (Where)
     SELECT *
       FROM demo_cds_para_sm( p_distance_l = @vl_from_distance,
                              p_distance_o = @vl_to_distance,
