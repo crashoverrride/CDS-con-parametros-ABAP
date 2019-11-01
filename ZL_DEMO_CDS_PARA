@@ -1,0 +1,25 @@
+@AbapCatalog.sqlViewName: 'DEMO_CDS_PARA_SM'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'DEMO CDS PARAMETERS'
+
+define view ZL_DEMO_CDS_PARA  // Nombre de CDS
+  with parameters
+// Parametros a utilizar en la CDS
+    p_distance_l :s_distance, 
+    p_distance_o :s_distance,
+    p_unit       :s_distid
+  as select from spfli  // Se usara la tabla spfli 
+
+{
+  key carrid, // Llave primaria
+  key connid, // Llave primaria
+      cityfrom,
+      cityto,
+      distance,
+      distid
+}
+where
+      distid   =       :p_unit
+  and distance between :p_distance_l and :p_distance_o;
